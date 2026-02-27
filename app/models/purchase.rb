@@ -1,7 +1,6 @@
 class Purchase < ApplicationRecord
   belongs_to :user
-  belongs_to :prompt
+  belongs_to :bundle
 
-  validates :prompt_id, uniqueness: { scope: :user_id }
+  validates :bundle_id, uniqueness: { scope: :user_id }
 end
-

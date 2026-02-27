@@ -1,0 +1,88 @@
+<section class="relative">
+  <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
+    <div class="relative p-8 sm:p-10">
+      <div class="absolute inset-0 -z-10">
+        <div class="absolute -top-24 left-10 h-64 w-64 rounded-full bg-fuchsia-500/15 blur-3xl"></div>
+        <div class="absolute top-16 right-10 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl"></div>
+      </div>
+
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+        <div class="max-w-2xl">
+          <p class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-slate-200">
+            Premium AI prompt bundles
+            <span class="h-1 w-1 rounded-full bg-white/30"></span>
+            Futuristic marketplace
+          </p>
+
+          <h1 class="mt-6 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+            Prompt Marketplace
+          </h1>
+          <p class="mt-4 text-base leading-relaxed text-slate-300">
+            Discover high-quality prompt bundles for Automation, Coding, and Career.
+            Unlock complete workflows in minutes — not hours.
+          </p>
+
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <%= link_to "Explore Bundles", bundles_path, class: "inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-500 via-pink-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-black shadow-[0_0_30px_rgba(217,70,239,0.25)] hover:shadow-[0_0_40px_rgba(34,211,238,0.25)] transition-all duration-300" %>
+            <%= link_to "Log in", login_path, class: "inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-slate-100 hover:bg-white/10 transition-all duration-300" %>
+          </div>
+        </div>
+
+        <div class="w-full max-w-xl">
+          <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
+              <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-fuchsia-500/30 via-pink-500/20 to-cyan-400/20"></div>
+              <div class="min-w-0 flex-1">
+                <div class="text-sm font-semibold text-white">Search bundles</div>
+                <div class="text-xs text-slate-400">Find by category or workflow (MVP)</div>
+              </div>
+              <div class="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-200">
+                Coming soon
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <div class="text-sm font-semibold text-white">Automation</div>
+                <p class="mt-1 text-xs text-slate-400">Zapier, Make, agents, workflows</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <div class="text-sm font-semibold text-white">Coding</div>
+                <p class="mt-1 text-xs text-slate-400">Debugging, refactors, scaffolds</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <div class="text-sm font-semibold text-white">Career</div>
+                <p class="mt-1 text-xs text-slate-400">Resume, LinkedIn, interviews</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <div class="text-sm font-semibold text-white">Bundle-only</div>
+                <p class="mt-1 text-xs text-slate-400">Minimum 10 prompts included</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-10">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06]">
+      <div class="text-sm font-semibold text-white">Explore the Marketplace</div>
+      <p class="mt-2 text-sm text-slate-300">Browse premium bundles with clean previews and unlock instantly.</p>
+      <div class="mt-4 text-xs text-slate-400">Curated for focus • Built for speed</div>
+    </div>
+    <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06]">
+      <div class="text-sm font-semibold text-white">Sell Bundles</div>
+      <p class="mt-2 text-sm text-slate-300">Publish structured bundles (10+ prompts) with premium formatting.</p>
+      <div class="mt-4 text-xs text-slate-400">High-quality workflows • Clear value</div>
+    </div>
+    <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06]">
+      <div class="text-sm font-semibold text-white">Unlock & Use</div>
+      <p class="mt-2 text-sm text-slate-300">Unlock a bundle once and access the full prompt library anytime.</p>
+      <div class="mt-4 text-xs text-slate-400">No noise • Just outcomes</div>
+    </div>
+  </div>
+</section>
+

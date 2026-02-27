@@ -17,12 +17,41 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="min-h-screen bg-[#0f0f14] text-slate-100 antialiased font-['Inter']">
+    <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-fuchsia-500/20 blur-3xl"></div>
+      <div class="absolute top-48 -left-20 h-[22rem] w-[22rem] rounded-full bg-cyan-400/15 blur-3xl"></div>
+      <div class="absolute -bottom-48 right-0 h-[26rem] w-[26rem] rounded-full bg-pink-400/10 blur-3xl"></div>
+    </div>
+
+    <%= render "shared/navbar" %>
+
+    <main class="mx-auto w-full max-w-6xl px-4 py-8">
+      <% flash.each do |type, message| %>
+        <div class="mb-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm backdrop-blur">
+          <div class="flex items-start gap-2">
+            <% if type.to_s == "notice" %>
+              <span class="mt-0.5 inline-flex h-2 w-2 flex-none rounded-full bg-emerald-400"></span>
+            <% else %>
+              <span class="mt-0.5 inline-flex h-2 w-2 flex-none rounded-full bg-rose-400"></span>
+            <% end %>
+            <p class="text-slate-200"><%= message %></p>
+          </div>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>
