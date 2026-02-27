@@ -173,7 +173,7 @@
       <% @bundles.each do |bundle| %>
         <% owner = logged_in? && current_user.id == bundle.user_id %>
         <% unlocked = owner || (@purchased_bundle_ids.include?(bundle.id)) %>
-        <%= render "shared/bundle_card", bundle:, unlocked:, owner: %>
+        <%= render "shared/bundle_card", bundle:, unlocked:, owner:, show_removed_badge: owner %>
       <% end %>
     </div>
   <% end %>

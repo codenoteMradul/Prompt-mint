@@ -7,7 +7,10 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @bundles = @user.bundles.includes(:user, :prompts).order(created_at: :desc)
+    viewing_own_profile = logged_in? && current_user.id == @user.id
+    bundles_scope = @user.bundles.includes(:user, :prompts).order(created_at: :desc)
+    bundles_scope = bundles_scope.active unless viewing_own_profile
+    @bundles = bundles_scope
 
     @total_bundles = @bundles.size
     @total_bundles_sold = Purchase.joins(:bundle).where(bundles: { user_id: @user.id }).count

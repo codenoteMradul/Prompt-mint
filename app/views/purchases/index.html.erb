@@ -12,7 +12,7 @@
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
     <% @purchases.each do |purchase| %>
       <% bundle = purchase.bundle %>
-      <%= render "shared/bundle_card", bundle:, unlocked: true, owner: false %>
+      <%= render "shared/bundle_card", bundle:, unlocked: true, owner: false, show_removed_badge: true %>
     <% end %>
   </div>
 <% end %>

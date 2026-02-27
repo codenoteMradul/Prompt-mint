@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   before_action :require_login
 
   def index
-    @bundles = Bundle.includes(:user, :prompts).order(:category, created_at: :desc)
+    @bundles = Bundle.active.includes(:user, :prompts).order(:category, created_at: :desc)
 
     if params[:category].present? && Bundle.categories.key?(params[:category].to_s)
       @bundles = @bundles.where(category: params[:category])

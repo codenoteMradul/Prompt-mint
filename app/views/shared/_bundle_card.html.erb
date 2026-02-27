@@ -1,6 +1,7 @@
 <% bundle = local_assigns.fetch(:bundle) %>
 <% unlocked = local_assigns.fetch(:unlocked) %>
 <% owner = local_assigns.fetch(:owner) %>
+<% show_removed_badge = local_assigns.fetch(:show_removed_badge, false) %>
 
 <div
   class="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06]"
@@ -30,13 +31,19 @@
     </div>
 
     <div class="mt-4 flex items-center justify-between">
-      <% if owner %>
-        <span class="rounded-full bg-white/5 px-2.5 py-1 text-xs text-slate-300">Owner</span>
-      <% elsif unlocked %>
-        <span class="rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs text-emerald-200">Unlocked</span>
-      <% else %>
-        <span class="rounded-full bg-amber-500/10 px-2.5 py-1 text-xs text-amber-200">Locked</span>
-      <% end %>
+      <div class="flex flex-wrap items-center gap-2">
+        <% if owner %>
+          <span class="rounded-full bg-white/5 px-2.5 py-1 text-xs text-slate-300">Owner</span>
+        <% elsif unlocked %>
+          <span class="rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs text-emerald-200">Unlocked</span>
+        <% else %>
+          <span class="rounded-full bg-amber-500/10 px-2.5 py-1 text-xs text-amber-200">Locked</span>
+        <% end %>
+
+        <% if show_removed_badge && bundle.deleted? %>
+          <span class="rounded-full border border-rose-500/20 bg-rose-500/10 px-2.5 py-1 text-xs text-rose-100">Creator removed this bundle from marketplace</span>
+        <% end %>
+      </div>
 
       <span class="text-xs text-slate-400"><%= bundle.prompts.size %> Prompts Included</span>
     </div>

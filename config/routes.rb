@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get "/messages/with/:user_id", to: "messages#show", as: :conversation
   post "/messages/with/:user_id", to: "messages#create", as: :conversation_messages
 
-  resources :bundles, only: [ :index, :new, :create, :show ] do
+  resources :bundles, only: [ :index, :new, :create, :show, :edit, :update, :destroy ] do
     resources :bundle_purchases, only: [ :create ]
   end
 

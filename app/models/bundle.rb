@@ -3,6 +3,8 @@ class Bundle < ApplicationRecord
 
   has_many_attached :demo_images
 
+  scope :active, -> { where(deleted: false) }
+
   belongs_to :user
   has_many :prompts, dependent: :destroy, inverse_of: :bundle
   accepts_nested_attributes_for :prompts, allow_destroy: true
