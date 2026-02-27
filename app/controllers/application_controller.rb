@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :logged_in?
   helper_method :bundle_access_level
+  helper_method :unread_message_count
 
   private
 
@@ -27,5 +28,11 @@ class ApplicationController < ActionController::Base
 
     purchased = Purchase.exists?(user_id: user.id, bundle_id: bundle.id)
     purchased ? :purchased : :preview
+  end
+
+  def unread_message_count
+    return 0 unless logged_in?
+
+    @unread_message_count ||= Message.where(recipient_id: current_user.id, read_at: nil).count
   end
 end

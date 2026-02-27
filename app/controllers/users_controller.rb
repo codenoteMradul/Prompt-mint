@@ -17,6 +17,10 @@ class UsersController < ApplicationController
     @review_count = @user.reviews_received.count
     @average_rating = @user.reviews_received.average(:rating)&.to_f
     @reviews = @user.reviews_received.includes(:reviewer).order(created_at: :desc)
+    @verified_buyer_ids = Purchase.joins(:bundle)
+                                  .where(bundles: { user_id: @user.id })
+                                  .distinct
+                                  .pluck(:user_id)
 
     @can_review = false
     if logged_in? && current_user.id != @user.id

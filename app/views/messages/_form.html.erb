@@ -1,0 +1,16 @@
+<div id="message_form">
+  <%= form_with model: message, url: conversation_messages_path(other_user), class: "flex flex-col gap-3 sm:flex-row sm:items-end" do |form| %>
+    <div class="flex-1">
+      <% if message.errors.any? %>
+        <div class="mb-3 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
+          <%= message.errors.full_messages.to_sentence %>
+        </div>
+      <% end %>
+
+      <%= form.label :body, "Message", class: "sr-only" %>
+      <%= form.text_area :body, rows: 3, required: true, class: "w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition-all duration-300 focus:border-cyan-400/40 focus:ring-4 focus:ring-cyan-400/10", placeholder: "Write a message…" %>
+    </div>
+    <%= form.submit "Send", class: "inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-500 via-pink-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-black shadow-[0_0_30px_rgba(217,70,239,0.20)] hover:shadow-[0_0_40px_rgba(34,211,238,0.20)] transition-all duration-300" %>
+  <% end %>
+</div>
+

@@ -31,6 +31,7 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:user).permit(
+      :avatar,
       :name,
       :phone,
       :country,
