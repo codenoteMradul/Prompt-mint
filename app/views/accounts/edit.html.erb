@@ -28,8 +28,9 @@
             </div>
 
             <div class="relative">
-              <%= form.telephone_field :phone, required: true, inputmode: "numeric", autocomplete: "tel", class: "peer w-full rounded-2xl border border-white/10 bg-black/30 px-4 pb-3 pt-6 text-sm text-white placeholder-transparent outline-none transition-all duration-300 focus:border-fuchsia-400/40 focus:ring-4 focus:ring-fuchsia-400/10", placeholder: "Phone" %>
+              <%= form.telephone_field :phone, required: true, inputmode: "numeric", pattern: "\\d*", autocomplete: "tel", data: { controller: "phone-input", action: "input->phone-input#sanitize paste->phone-input#sanitize" }, class: "peer w-full rounded-2xl border border-white/10 bg-black/30 px-4 pb-3 pt-6 text-sm text-white placeholder-transparent outline-none transition-all duration-300 focus:border-fuchsia-400/40 focus:ring-4 focus:ring-fuchsia-400/10", placeholder: "14155552671" %>
               <%= form.label :phone, "Phone", class: "pointer-events-none absolute left-4 top-2 text-xs font-medium tracking-wide text-slate-400 transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-fuchsia-200" %>
+              <p class="mt-2 text-xs text-slate-500">Numbers only (7–15 digits).</p>
             </div>
 
             <div class="relative sm:col-span-2">

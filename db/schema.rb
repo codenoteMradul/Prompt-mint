@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_27_145500) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_27_163500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,6 +45,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_27_145500) do
     t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "reviewer_id", null: false
+    t.bigint "seller_id", null: false
+    t.integer "rating", null: false
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reviewer_id", "seller_id"], name: "index_reviews_on_reviewer_id_and_seller_id", unique: true
+    t.index ["reviewer_id"], name: "index_reviews_on_reviewer_id"
+    t.index ["seller_id"], name: "index_reviews_on_seller_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -64,4 +76,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_27_145500) do
   add_foreign_key "prompts", "bundles"
   add_foreign_key "purchases", "bundles"
   add_foreign_key "purchases", "users"
+  add_foreign_key "reviews", "users", column: "reviewer_id"
+  add_foreign_key "reviews", "users", column: "seller_id"
 end

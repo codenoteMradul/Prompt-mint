@@ -5,7 +5,9 @@ Rails.application.routes.draw do
 
   get "/signup", to: "users#new"
   post "/signup", to: "users#create"
-  resources :users, only: [ :show ]
+  resources :users, only: [ :show ] do
+    resources :reviews, only: [ :create ]
+  end
 
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"

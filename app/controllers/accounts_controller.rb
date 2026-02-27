@@ -3,6 +3,8 @@ class AccountsController < ApplicationController
 
   def show
     @user = current_user
+    @review_count = @user.reviews_received.count
+    @average_rating = @user.reviews_received.average(:rating)&.to_f
   end
 
   def edit
@@ -40,4 +42,3 @@ class AccountsController < ApplicationController
     )
   end
 end
-

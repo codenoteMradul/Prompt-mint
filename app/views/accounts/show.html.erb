@@ -45,7 +45,7 @@
           </div>
           <div class="flex items-center justify-between gap-3">
             <dt class="text-slate-400">Rating</dt>
-            <dd class="text-slate-200"><%= current_user.rating %> (<%= current_user.total_reviews %>)</dd>
+            <dd class="text-slate-200"><%= (@average_rating || 0).round(1) %> (<%= @review_count %>)</dd>
           </div>
         </dl>
         <p class="mt-4 text-sm text-slate-400"><%= current_user.profile_description.presence || "No bio yet." %></p>
@@ -53,4 +53,3 @@
     </div>
   </div>
 </section>
-
