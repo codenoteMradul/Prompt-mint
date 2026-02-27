@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   get "/my-purchases", to: "purchases#index", as: :my_purchases
 
+  resource :account, only: [ :show, :edit, :update ]
+
   resources :bundles, only: [ :index, :new, :create, :show ] do
     resources :bundle_purchases, only: [ :create ]
   end

@@ -9,6 +9,7 @@
             <%= link_to "Dashboard", dashboard_path, class: "rounded-xl px-3 py-2 text-sm text-slate-200 hover:bg-white/5 hover:text-white transition-all duration-300" %>
             <%= link_to "Sell Bundle", new_bundle_path, class: "rounded-xl px-3 py-2 text-sm text-slate-200 hover:bg-white/5 hover:text-white transition-all duration-300" %>
             <%= link_to "My Purchases", my_purchases_path, class: "rounded-xl px-3 py-2 text-sm text-slate-200 hover:bg-white/5 hover:text-white transition-all duration-300" %>
+            <%= link_to "Account", account_path, class: "rounded-xl px-3 py-2 text-sm text-slate-200 hover:bg-white/5 hover:text-white transition-all duration-300" %>
           </nav>
         <% end %>
       </div>
@@ -31,6 +32,9 @@
           <%= link_to "Sell", new_bundle_path, class: "flex-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-center text-sm text-slate-200 hover:bg-white/10 transition-all duration-300" %>
           <%= link_to "Purchases", my_purchases_path, class: "flex-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-center text-sm text-slate-200 hover:bg-white/10 transition-all duration-300" %>
         </nav>
+        <div class="mt-2">
+          <%= link_to "Account", account_path, class: "block rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-center text-sm text-slate-200 hover:bg-white/10 transition-all duration-300" %>
+        </div>
       </div>
     <% end %>
   </div>

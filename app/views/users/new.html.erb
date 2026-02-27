@@ -29,6 +29,11 @@
         </div>
 
         <div class="relative">
+          <%= form.select :country, country_options_for_select, { include_blank: "Select country" }, required: true, class: "peer w-full appearance-none rounded-2xl border border-white/10 bg-black/30 px-4 pb-3 pt-6 text-sm text-white outline-none transition-all duration-300 focus:border-pink-400/40 focus:ring-4 focus:ring-pink-400/10" %>
+          <%= form.label :country, "Country", class: "pointer-events-none absolute left-4 top-2 text-xs font-medium tracking-wide text-slate-400" %>
+        </div>
+
+        <div class="relative">
           <%= form.email_field :email, required: true, autocomplete: "email", class: "peer w-full rounded-2xl border border-white/10 bg-black/30 px-4 pb-3 pt-6 text-sm text-white placeholder-transparent outline-none transition-all duration-300 focus:border-cyan-400/40 focus:ring-4 focus:ring-cyan-400/10", placeholder: "Email" %>
           <%= form.label :email, "Email", class: "pointer-events-none absolute left-4 top-2 text-xs font-medium tracking-wide text-slate-400 transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-cyan-200" %>
         </div>
