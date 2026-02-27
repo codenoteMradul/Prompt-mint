@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   helper_method :current_user, :logged_in?
+  helper_method :bundle_access_level
 
   private
 
@@ -18,5 +19,13 @@ class ApplicationController < ActionController::Base
     return if logged_in?
 
     redirect_to login_path, alert: "Please log in to continue."
+  end
+
+  def bundle_access_level(user, bundle)
+    return :preview if user.nil?
+    return :owner if bundle.user_id == user.id
+
+    purchased = Purchase.exists?(user_id: user.id, bundle_id: bundle.id)
+    purchased ? :purchased : :preview
   end
 end

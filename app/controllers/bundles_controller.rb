@@ -1,5 +1,5 @@
 class BundlesController < ApplicationController
-  before_action :require_login
+  before_action :require_login, except: [ :index, :show ]
   before_action :set_bundle, only: :show
 
   def index
@@ -23,8 +23,9 @@ class BundlesController < ApplicationController
   end
 
   def show
-    @owner = @bundle.user_id == current_user.id
-    @unlocked = @owner || current_user.purchases.exists?(bundle_id: @bundle.id)
+    @access_level = bundle_access_level(current_user, @bundle)
+    @owner = @access_level == :owner
+    @unlocked = @owner || @access_level == :purchased
   end
 
   private

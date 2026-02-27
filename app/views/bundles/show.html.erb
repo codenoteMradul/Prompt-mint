@@ -4,6 +4,10 @@
   <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
     <div>
       <h1 class="text-2xl font-semibold tracking-tight text-white"><%= @bundle.title %></h1>
+      <div class="mt-2 text-xs text-slate-400">
+        by
+        <%= link_to(@bundle.user&.name.presence || "Seller", user_path(@bundle.user_id), class: "text-slate-300 hover:text-white transition-colors duration-300") %>
+      </div>
       <p class="mt-2 text-sm text-slate-300"><%= @bundle.description %></p>
       <div class="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-400">
         <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200"><%= @bundle.category.titleize %></span>
@@ -20,7 +24,11 @@
     </div>
 
     <% unless @owner || @unlocked %>
-      <%= button_to "Unlock Bundle", bundle_bundle_purchases_path(@bundle), method: :post, form_class: "inline-flex", class: "inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-500 via-pink-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-black shadow-[0_0_30px_rgba(217,70,239,0.25)] hover:shadow-[0_0_40px_rgba(34,211,238,0.25)] transition-all duration-300" %>
+      <% if logged_in? %>
+        <%= button_to "Buy Bundle", bundle_bundle_purchases_path(@bundle), method: :post, form_class: "inline-flex", class: "inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-500 via-pink-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-black shadow-[0_0_30px_rgba(217,70,239,0.25)] hover:shadow-[0_0_40px_rgba(34,211,238,0.25)] transition-all duration-300" %>
+      <% else %>
+        <%= link_to "Log in to buy", login_path, class: "inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-slate-100 hover:bg-white/10 transition-all duration-300" %>
+      <% end %>
     <% end %>
   </div>
 </div>
@@ -31,7 +39,7 @@
     <% if @owner || @unlocked %>
       <span class="text-xs text-slate-400">Full access</span>
     <% else %>
-      <span class="text-xs text-slate-400">Preview</span>
+      <span class="text-xs text-slate-400">Demo preview</span>
     <% end %>
   </div>
 
@@ -47,21 +55,52 @@
       <% end %>
     </div>
   <% else %>
-    <div class="mt-4 rounded-2xl border border-white/10 bg-black/20 p-5">
-      <div class="text-sm font-semibold text-white">What’s inside</div>
-      <ul class="mt-3 space-y-2 text-sm text-slate-200">
-        <% @bundle.prompts.first(2).each do |prompt| %>
-          <li class="truncate">• <%= prompt.title %></li>
-        <% end %>
-      </ul>
+    <% demo_prompts = @bundle.prompts.first(2) %>
+    <% locked_count = [@bundle.prompts.size - demo_prompts.size, 0].max %>
 
-      <div class="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/30 p-4">
-        <p class="whitespace-pre-wrap text-sm text-slate-200 blur-sm select-none"><%= truncate(@bundle.prompts.first&.content.to_s, length: 600) %></p>
-        <div class="mt-4 h-px w-full bg-white/10"></div>
-        <p class="mt-4 whitespace-pre-wrap text-sm text-slate-200 blur-sm select-none"><%= truncate(@bundle.prompts.second&.content.to_s, length: 600) %></p>
+    <div class="mt-4 space-y-3">
+      <% demo_prompts.each_with_index do |prompt, index| %>
+        <div class="rounded-2xl border border-white/10 bg-black/20 p-5">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="truncate text-sm font-semibold text-white"><%= index + 1 %>. <%= prompt.title %></h3>
+            <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200">Demo</span>
+          </div>
+          <pre class="mt-3 max-h-72 overflow-auto whitespace-pre-wrap rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-200"><%= prompt.content %></pre>
+        </div>
+      <% end %>
+
+      <div class="my-6 h-px w-full bg-gradient-to-r from-fuchsia-500/30 via-white/10 to-cyan-400/20"></div>
+
+      <div class="rounded-2xl border border-white/10 bg-black/20 p-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="text-sm font-semibold text-white">Locked prompts</div>
+            <p class="mt-1 text-sm text-slate-400">Unlock this bundle to access all prompts.</p>
+          </div>
+          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200"><%= locked_count %> locked</span>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <% [locked_count, 4].min.times do |i| %>
+            <div class="rounded-2xl border border-white/10 bg-black/30 p-4">
+              <div class="flex items-center justify-between gap-3">
+                <div class="truncate text-sm font-semibold text-slate-200">🔒 Premium Prompt</div>
+                <span class="text-xs text-slate-500">Locked</span>
+              </div>
+              <div class="mt-3 h-12 w-full rounded-xl bg-white/5 blur-[1.5px]"></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-xs text-slate-500">You’re viewing a demo preview (2 prompts).</p>
+          <% if logged_in? %>
+            <%= button_to "Buy Bundle", bundle_bundle_purchases_path(@bundle), method: :post, form_class: "inline-flex", class: "inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-500 via-pink-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-black shadow-[0_0_30px_rgba(217,70,239,0.25)] hover:shadow-[0_0_40px_rgba(34,211,238,0.25)] transition-all duration-300" %>
+          <% else %>
+            <%= link_to "Log in to buy", login_path, class: "inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-slate-100 hover:bg-white/10 transition-all duration-300" %>
+          <% end %>
+        </div>
       </div>
-
-      <p class="mt-4 text-sm text-slate-400">Unlock to view all prompts and full content.</p>
     </div>
   <% end %>
 </div>
