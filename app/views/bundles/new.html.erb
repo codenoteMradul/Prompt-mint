@@ -5,8 +5,8 @@
     <p class="mt-1 text-sm text-slate-400">Create a bundle with at least <%= Bundle::MIN_PROMPTS %> prompts.</p>
   </div>
 
-  <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
-    <%= form_with model: @bundle, data: { controller: "bundle-form", action: "submit->bundle-form#submitAttempt", bundle_form_min_value: Bundle::MIN_PROMPTS } do |form| %>
+	  <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
+	    <%= form_with model: @bundle, data: { controller: "bundle-form bundle-demo-images", action: "submit->bundle-form#submitAttempt", bundle_form_min_value: Bundle::MIN_PROMPTS } do |form| %>
       <% if @bundle.errors.any? %>
         <div class="mb-6 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
           <div class="font-semibold"><%= pluralize(@bundle.errors.count, "error") %> prevented this bundle from being saved:</div>
@@ -29,21 +29,50 @@
           <%= form.label :description, "Description", class: "pointer-events-none absolute left-4 top-2 text-xs font-medium tracking-wide text-slate-400 transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-fuchsia-200" %>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div class="relative">
-            <%= form.select :category, Bundle.categories.keys.map { |c| [c.titleize, c] }, { include_blank: "Select category" }, required: true, class: "peer w-full appearance-none rounded-2xl border border-white/10 bg-black/30 px-4 pb-3 pt-6 text-sm text-white outline-none transition-all duration-300 focus:border-cyan-400/40 focus:ring-4 focus:ring-cyan-400/10" %>
-            <%= form.label :category, "Category", class: "pointer-events-none absolute left-4 top-2 text-xs font-medium tracking-wide text-slate-400" %>
-          </div>
+	        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+	          <div class="relative">
+	            <%= form.select :category, Bundle.categories.keys.map { |c| [c.titleize, c] }, { include_blank: "Select category" }, required: true, data: { bundle_demo_images_target: "category", action: "change->bundle-demo-images#categoryChanged" }, class: "peer w-full appearance-none rounded-2xl border border-white/10 bg-black/30 px-4 pb-3 pt-6 text-sm text-white outline-none transition-all duration-300 focus:border-cyan-400/40 focus:ring-4 focus:ring-cyan-400/10" %>
+	            <%= form.label :category, "Category", class: "pointer-events-none absolute left-4 top-2 text-xs font-medium tracking-wide text-slate-400" %>
+	          </div>
 
-          <div class="relative">
-            <%= form.number_field :price, min: 0, step: 1, required: true, class: "peer w-full rounded-2xl border border-white/10 bg-black/30 px-4 pb-3 pt-6 text-sm text-white placeholder-transparent outline-none transition-all duration-300 focus:border-pink-400/40 focus:ring-4 focus:ring-pink-400/10", placeholder: "Price" %>
-            <%= form.label :price, "Price", class: "pointer-events-none absolute left-4 top-2 text-xs font-medium tracking-wide text-slate-400 transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-pink-200" %>
-          </div>
-        </div>
+	          <div class="relative">
+	            <%= form.number_field :price, min: 0, step: 1, required: true, class: "peer w-full rounded-2xl border border-white/10 bg-black/30 px-4 pb-3 pt-6 text-sm text-white placeholder-transparent outline-none transition-all duration-300 focus:border-pink-400/40 focus:ring-4 focus:ring-pink-400/10", placeholder: "Price" %>
+	            <%= form.label :price, "Price", class: "pointer-events-none absolute left-4 top-2 text-xs font-medium tracking-wide text-slate-400 transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-slate-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-pink-200" %>
+	          </div>
+	        </div>
 
-        <div>
-          <div class="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
+	        <div class="hidden rounded-2xl border border-white/10 bg-black/20 p-4" data-bundle-demo-images-target="section">
+	          <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+	            <div>
+	              <h2 class="text-sm font-semibold text-white">Demo images</h2>
+	              <p class="mt-1 text-xs text-slate-400">Required for <span class="text-slate-200">Image Generation</span> bundles (1–2 images, max 5MB each).</p>
+	            </div>
+	            <span class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200">Max 2</span>
+	          </div>
+
+	          <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+	            <div>
+	              <label class="block text-xs font-medium tracking-wide text-slate-300" for="bundle_demo_images">Upload images</label>
+	              <div class="mt-2">
+	                <%= form.file_field :demo_images, id: "bundle_demo_images", multiple: true, accept: "image/*", data: { bundle_demo_images_target: "input", action: "change->bundle-demo-images#filesChanged" }, class: "block w-full cursor-pointer rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-slate-200 file:mr-3 file:rounded-xl file:border-0 file:bg-white/10 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-slate-100 hover:file:bg-white/15 focus:outline-none focus:ring-4 focus:ring-cyan-400/10" %>
+	              </div>
+	              <p class="mt-2 text-xs text-slate-500">PNG/JPG/WEBP recommended.</p>
+	              <div class="hidden mt-3 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-xs text-rose-100" data-bundle-demo-images-target="error">
+	                You can upload up to 2 demo images.
+	              </div>
+	            </div>
+
+	            <div>
+	              <div class="text-xs font-medium tracking-wide text-slate-300">Preview</div>
+	              <div class="mt-2 grid grid-cols-2 gap-2" data-bundle-demo-images-target="preview"></div>
+	              <p class="mt-2 text-xs text-slate-500">Previews are shown before submit.</p>
+	            </div>
+	          </div>
+	        </div>
+
+	        <div>
+	          <div class="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+	            <div>
               <h2 class="text-sm font-semibold text-white">Bundle Prompts</h2>
               <p class="mt-1 text-xs text-slate-400">
                 <span data-bundle-form-target="count">1</span> / <%= Bundle::MIN_PROMPTS %> prompts added (minimum required: <%= Bundle::MIN_PROMPTS %>)

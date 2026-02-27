@@ -31,10 +31,17 @@ class BundlesController < ApplicationController
   private
 
   def set_bundle
-    @bundle = Bundle.includes(:prompts).find(params[:id])
+    @bundle = Bundle.with_attached_demo_images.includes(:user, :prompts).find(params[:id])
   end
 
   def bundle_params
-    params.require(:bundle).permit(:title, :description, :category, :price, prompts_attributes: [ :id, :title, :content, :_destroy ])
+    params.require(:bundle).permit(
+      :title,
+      :description,
+      :category,
+      :price,
+      { demo_images: [] },
+      prompts_attributes: [ :id, :title, :content, :_destroy ]
+    )
   end
 end
