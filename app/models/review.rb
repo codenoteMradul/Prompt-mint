@@ -7,6 +7,8 @@ class Review < ApplicationRecord
   validate :reviewer_must_be_verified_buyer
   validate :reviewer_cannot_review_self
 
+  after_create_commit :recalculate_creator_ranks
+
   private
 
   def reviewer_must_be_verified_buyer
@@ -27,5 +29,8 @@ class Review < ApplicationRecord
 
     errors.add(:base, "You cannot review yourself.")
   end
-end
 
+  def recalculate_creator_ranks
+    CreatorRankingService.recalculate_all!
+  end
+end

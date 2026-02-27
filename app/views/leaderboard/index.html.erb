@@ -1,0 +1,75 @@
+<div class="mb-8">
+  <h1 class="text-2xl font-semibold tracking-tight text-white">Leaderboard</h1>
+  <p class="mt-1 text-sm text-slate-400">Top creators on PromptMint ranked by creator score.</p>
+</div>
+
+<% if @creators.empty? %>
+  <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-10 text-center shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
+    <h3 class="text-sm font-semibold text-white">No ranked creators yet.</h3>
+    <p class="mt-1 text-sm text-slate-400">Rankings update when reviews, purchases, or experience change.</p>
+  </div>
+<% else %>
+  <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
+    <div class="grid grid-cols-12 gap-0 border-b border-white/10 bg-black/20 px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+      <div class="col-span-1">Rank</div>
+      <div class="col-span-5">Creator</div>
+      <div class="col-span-2">Rating</div>
+      <div class="col-span-2">Experience</div>
+      <div class="col-span-1">Sales</div>
+      <div class="col-span-1 text-right">Score</div>
+    </div>
+
+    <div class="divide-y divide-white/10">
+      <% @creators.each do |creator| %>
+        <% rating = @average_ratings[creator.id].to_f %>
+        <% reviews = @review_counts[creator.id].to_i %>
+        <% sales = @sales_counts[creator.id].to_i %>
+
+        <div class="grid grid-cols-12 items-center gap-0 px-6 py-5 hover:bg-white/[0.03] transition-colors duration-300">
+          <div class="col-span-1">
+            <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-200">#<%= creator.rank_position %></span>
+          </div>
+
+          <div class="col-span-5 flex items-center gap-3">
+            <% if creator.avatar.attached? %>
+              <%= image_tag creator.avatar, class: "h-10 w-10 rounded-full border border-white/10 object-cover" %>
+            <% else %>
+              <div class="h-10 w-10 rounded-full border border-white/10 bg-gradient-to-br from-fuchsia-500/30 via-pink-500/20 to-cyan-400/20"></div>
+            <% end %>
+
+            <div class="min-w-0">
+              <%= link_to creator.name, user_path(creator), class: "block truncate text-sm font-semibold text-white hover:text-cyan-200 transition-colors duration-300" %>
+              <div class="mt-0.5 text-xs text-slate-400"><%= creator.country.presence || "—" %></div>
+            </div>
+          </div>
+
+          <div class="col-span-2">
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-0.5">
+                <% 5.times do |i| %>
+                  <% filled = rating >= (i + 1) %>
+                  <span class="<%= filled ? "text-amber-300" : "text-white/20" %>">★</span>
+                <% end %>
+              </div>
+              <span class="text-sm font-semibold text-white"><%= rating.round(1) %></span>
+              <span class="text-xs text-slate-500">(<%= reviews %>)</span>
+            </div>
+          </div>
+
+          <div class="col-span-2 text-sm text-slate-200">
+            <%= creator.years_of_experience.to_i %> yrs
+          </div>
+
+          <div class="col-span-1 text-sm font-semibold text-slate-200">
+            <%= sales %>
+          </div>
+
+          <div class="col-span-1 text-right text-sm font-semibold text-white">
+            <%= creator.ranking_score.to_f.round(2) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+

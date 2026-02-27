@@ -32,6 +32,14 @@
               <% if @user.years_of_experience.present? %>
                 <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200"><%= @user.years_of_experience %> yrs exp</span>
               <% end %>
+              <% if @user.rank_position.present? %>
+                <span class="rounded-full border border-fuchsia-500/20 bg-fuchsia-500/10 px-3 py-1 text-xs text-fuchsia-100 shadow-[0_0_20px_rgba(217,70,239,0.15)]">
+                  Rank #<%= @user.rank_position %> on PromptMint
+                </span>
+                <span class="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-100 shadow-[0_0_20px_rgba(34,211,238,0.12)]">
+                  Score <%= @user.ranking_score.to_f.round(2) %>
+                </span>
+              <% end %>
             </div>
           </div>
         </div>
@@ -55,6 +63,27 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2">
+          <% creator_badge = nil %>
+          <% if @user.rank_position.to_i > 0 && @user.rank_position.to_i <= 3 %>
+            <% creator_badge = "Top Creator" %>
+          <% elsif (@average_rating || 0).to_f >= 4.5 && @total_bundles_sold.to_i > 20 %>
+            <% creator_badge = "Elite Creator" %>
+          <% elsif @user.rank_position.to_i > 0 && @user.rank_position.to_i <= 20 %>
+            <% creator_badge = "Rising Creator" %>
+          <% end %>
+
+          <% if creator_badge.present? %>
+            <div class="col-span-2 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 sm:col-span-4 lg:col-span-2">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <div class="text-xs text-slate-400">Badge</div>
+                  <div class="mt-1 text-lg font-semibold text-white"><%= creator_badge %></div>
+                </div>
+                <div class="h-10 w-10 rounded-2xl border border-white/10 bg-gradient-to-br from-fuchsia-500/20 via-pink-500/10 to-cyan-400/10"></div>
+              </div>
+            </div>
+          <% end %>
+
           <div class="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
             <div class="text-xs text-slate-400">Avg rating</div>
             <div class="mt-1 flex items-center gap-2">

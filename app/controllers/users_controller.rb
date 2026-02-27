@@ -7,6 +7,10 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    if @user.rank_position.nil? && @user.bundles.exists?
+      CreatorRankingService.recalculate_all!
+      @user.reload
+    end
     viewing_own_profile = logged_in? && current_user.id == @user.id
     bundles_scope = @user.bundles.includes(:user, :prompts).order(created_at: :desc)
     bundles_scope = bundles_scope.active unless viewing_own_profile

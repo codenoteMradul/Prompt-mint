@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   get "/dashboard", to: "dashboard#index"
 
+  get "/leaderboard", to: "leaderboard#index", as: :leaderboard
+
   get "/my-purchases", to: "purchases#index", as: :my_purchases
 
   resource :account, only: [ :show, :edit, :update ]

@@ -54,10 +54,38 @@
             <dd class="text-slate-200"><%= current_user.years_of_experience || 0 %> years</dd>
           </div>
           <div class="flex items-center justify-between gap-3">
+            <dt class="text-slate-400">Rank</dt>
+            <dd class="text-slate-200">
+              <% if current_user.rank_position.present? %>
+                #<%= current_user.rank_position %>
+              <% else %>
+                Unranked
+              <% end %>
+            </dd>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <dt class="text-slate-400">Score</dt>
+            <dd class="text-slate-200"><%= current_user.ranking_score.to_f.round(2) %></dd>
+          </div>
+          <div class="flex items-center justify-between gap-3">
             <dt class="text-slate-400">Rating</dt>
             <dd class="text-slate-200"><%= (@average_rating || 0).round(1) %> (<%= @review_count %>)</dd>
           </div>
         </dl>
+        <% badge = nil %>
+        <% if current_user.rank_position.to_i > 0 && current_user.rank_position.to_i <= 3 %>
+          <% badge = "Top Creator" %>
+        <% elsif (@average_rating || 0).to_f >= 4.5 && Purchase.joins(:bundle).where(bundles: { user_id: current_user.id }).count > 20 %>
+          <% badge = "Elite Creator" %>
+        <% elsif current_user.rank_position.to_i > 0 && current_user.rank_position.to_i <= 20 %>
+          <% badge = "Rising Creator" %>
+        <% end %>
+        <% if badge.present? %>
+          <div class="mt-4 inline-flex items-center gap-2 rounded-2xl border border-fuchsia-500/20 bg-fuchsia-500/10 px-3 py-2 text-xs font-semibold text-fuchsia-100 shadow-[0_0_20px_rgba(217,70,239,0.15)]">
+            <span class="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-300"></span>
+            <span><%= badge %></span>
+          </div>
+        <% end %>
         <p class="mt-4 text-sm text-slate-400"><%= current_user.profile_description.presence || "No bio yet." %></p>
       </div>
     </div>

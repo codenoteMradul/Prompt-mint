@@ -13,6 +13,7 @@ class User < ApplicationRecord
   before_validation :normalize_email
   before_validation :normalize_phone
   before_validation :normalize_country
+  after_update_commit :recalculate_creator_ranks_if_needed
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
@@ -51,5 +52,11 @@ class User < ApplicationRecord
     if avatar.blob&.byte_size.to_i > 5.megabytes
       errors.add(:avatar, "must be smaller than 5MB")
     end
+  end
+
+  def recalculate_creator_ranks_if_needed
+    return unless saved_change_to_years_of_experience?
+
+    CreatorRankingService.recalculate_all!
   end
 end

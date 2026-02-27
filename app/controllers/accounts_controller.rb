@@ -3,6 +3,10 @@ class AccountsController < ApplicationController
 
   def show
     @user = current_user
+    if @user.rank_position.nil? && @user.bundles.exists?
+      CreatorRankingService.recalculate_all!
+      @user.reload
+    end
     @review_count = @user.reviews_received.count
     @average_rating = @user.reviews_received.average(:rating)&.to_f
   end
